@@ -2,67 +2,61 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>SocketIOチャット</title>
+  <title>SocketIOチャット</title><style>
+    #inputmyname {
+        display: none
+    }
+
+    #chat {
+        display: none
+    }
+
+    #msglist {
+        list-style-type: none;
+        padding-left: 1px;
+    }
+
+    .msg-me {
+        color: blue
+    }
+
+    .name {
+        font-weight: bold
+    }
+</style>
 </head>
 <body>
 
 <h1>SocketIOチャット</h1>
 
-<!-- 発言フォーム -->
-<form id="frm-post">
-  <input type="text" id="msg">
-  <button>送信</button>
-</form>
+<!-- STEP1. 接続中 -->
+<section id="nowconnecting">
+    ...サーバに接続中
+</section>
 
-<!-- 発言ログ -->
-<ul id="msglist">
-</ul>
+<!-- STEP2. 名前を入力 -->
+<section id="inputmyname">
+    <p>あなたの名前を入力してください</p>
+    <form id="frm-myname">
+        <input type="text" id="txt-myname">
+        <button>入室</button>
+    </form>
+</section>
 
+<!-- STEP3. チャット開始 -->
+<section id="chat">
+    <!-- 発言フォーム -->
+    <form id="frm-post">
+        <span id="myname"></span>&nbsp;<input type="text" id="msg">
+        <button>送信</button>
+    </form>
+
+    <!-- 発言ログ -->
+    <ul id="msglist"></ul>
+</section>
 
 <script src="/socket.io/socket.io.js"></script>
-<script>
-  //-------------------------------------
-  // Socket.ioサーバへ接続
-  //-------------------------------------
-  const socket = io();
-
-  /**
-   * [イベント] フォームが送信された
-   */
-  document.querySelector("#frm-post").addEventListener("submit", (e)=>{
-    // 規定の送信処理をキャンセル(画面遷移しないなど)
-    e.preventDefault();
-
-    // 入力内容を取得する
-    const msg = document.querySelector("#msg");
-    if( msg.value === "" ){
-      return(false);
-    }
-
-    // Socket.ioサーバへ送信
-    socket.emit("post", {text: msg.value});
-
-    // 発言フォームを空にする
-    msg.value = "";
-  });
-
-  /**
-   * [イベント] 誰かが発言した
-   */
-  socket.on("member-post", (msg)=>{
-    const list = document.querySelector("#msglist");
-    const li = document.createElement("li");
-    li.innerHTML = `${msg.text}`;
-    list.insertBefore(li, list.firstChild);
-  });
-
-  /**
-   * [イベント] ページの読込み完了
-   */
-  window.onload = ()=>{
-    // テキストボックスを選択する
-    document.querySelector("#msg").focus();
-  }
-</script>
+<script src="util.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
