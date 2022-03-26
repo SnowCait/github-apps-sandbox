@@ -25,6 +25,10 @@ let MEMBER_COUNT = 1;
 app.get("/", (req, res) => {
     res.sendFile(DOCUMENT_ROOT + "/index.html");
 });
+app.get("/callback", (req, res) => {
+    console.log(req.body);
+    res.sendFile(DOCUMENT_ROOT + "/index.html");
+});
 app.get("/:file", (req, res) => {
     res.sendFile(DOCUMENT_ROOT + "/" + req.params.file);
 });

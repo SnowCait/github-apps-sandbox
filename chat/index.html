@@ -7,6 +7,17 @@
 </head>
 <body>
 
+    <section>
+        <a href="https://github.com/login/oauth/authorize?client_id=***&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback">Signin with GitHub</a>
+        <form action="https://github.com/login/oauth/access_token" method="POST">
+            <input type="text" name="client_id" value="">
+            <input type="text" name="client_secret" value="">
+            <input type="text" name="code" value="">
+            <input type="text" name="redirect_uri" value="http://localhost:3000/login">
+            <input type="submit" value="send">
+        </form>
+    </section>
+
 <h1>SocketIOチャット</h1>
 
 <!-- STEP1. 接続中 -->

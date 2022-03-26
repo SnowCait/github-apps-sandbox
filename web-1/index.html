@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>soket.io client</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    $(function() {
+        var socket = io.connect();
+        // ----------------------------------------------------------------------
+        // 1-1. サーバーにメッセージを送信する処理.
+        // ----------------------------------------------------------------------
+        $('#sendButton').click(function() {
+            var sendData = {
+                message : $('#text').val()
+            };
+            socket.emit('saveData', sendData);
+        });
+        // ----------------------------------------------------------------------
+        // 1-2. サーバーで集約している情報を表示する処理.
+        // ----------------------------------------------------------------------
+        socket.on('setView', function(dataByServer, serverFunction) {
+            $('#view').empty().html(dataByServer.messages.join('<br />'));
+        });
+    });
+</script>
+</head>
+<body>
+    <h3>クライアントからのメッセージをサーバーで集約し、クライアントに集約したデータを共有するテスト</h3>
+    <input id="text" type="text" />
+    <input id="sendButton" type="button" value="送信" />
+    <div id="view"></div>
+</body>
+</html>
